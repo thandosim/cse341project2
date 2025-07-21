@@ -1,1 +1,31 @@
-http://localhost:8080/users
+###get all users
+GET http://localhost:8080/users
+###get user by id
+GET http://localhost:8080/users/687df57a5857e3652cdec45f
+###create a new user
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "type": "student",
+  "gender": "female",
+  "birthday": "2004-06-17T00:00:00.000Z",
+  "favoriteColor": "light green"
+}
+###update user by id
+PUT http://localhost:8080/users/687df57a5857e3652cdec45f
+Content-Type: application/json
+
+{
+  "firstName": "Jane",
+  "lastName": "Doe",
+  "type": "student",
+  "gender": "male",
+  "birthday": "2004-06-17T00:00:00.000Z",
+  "favoriteColor": "light green"
+}
+
+###delete user by id
+DELETE http://localhost:8080/users/687df57a5857e3652cdec45f

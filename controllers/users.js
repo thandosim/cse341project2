@@ -3,7 +3,9 @@ const { getDb } = require('../db/connect');
 
 const getAllUsers = async (req, res, next) => {
   try {
-    const users = await getDb().db().collection('users').find().toArray();
+    const db = getDb();
+    // const users = await getDb().db().collection('users').find().toArray();
+    const users = await db.collection('users').find().toArray();
     res.status(200).json(users);
   } catch (err) {
     next(err);

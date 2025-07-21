@@ -7,6 +7,8 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerFile = require('./swagger.json'); // or your swagger config
 
 const app = express();
+app.use(express.json()); // Parse JSON bodies
+
 const port = process.env.PORT || 8080;
 
 app.use(cors());
@@ -23,8 +25,8 @@ app.use('/', require('./routes'));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 // Error Handler
-// const errorHandler = require('./middleware/errorHandler');
-// app.use(errorHandler);
+const {errorHandler} = require('./middleware/errorHandler');
+app.use(errorHandler);
 
 // Only start server after DB connection
 mongodb.initDb((err) => {
