@@ -33,7 +33,39 @@
       },
       "post": {
         "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "example": "any"
+                },
+                "lastName": {
+                  "example": "any"
+                },
+                "type": {
+                  "example": "any"
+                },
+                "gender": {
+                  "example": "any"
+                },
+                "birthday": {
+                  "example": "any"
+                },
+                "favoriteColor": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
+          "201": {
+            "description": "Created"
+          },
           "400": {
             "description": "Bad Request"
           }
@@ -68,9 +100,39 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "example": "any"
+                },
+                "lastName": {
+                  "example": "any"
+                },
+                "type": {
+                  "example": "any"
+                },
+                "gender": {
+                  "example": "any"
+                },
+                "birthday": {
+                  "example": "any"
+                },
+                "favoriteColor": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "400": {
             "description": "Bad Request"
           },

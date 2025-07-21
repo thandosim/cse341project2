@@ -11,10 +11,12 @@ router.get('/', handleErrors(usersController.getAllUsers));
 router.get('/:id', validateUserId, handleErrors(usersController.getUserById));
 
 // POST new user
-router.post('/', userRules, validate, handleErrors(usersController.createUser));
+// router.post('/', userRules, validate, handleErrors(usersController.createUser));
+router.post('/', userRules, validate, usersController.createUser);
 
 // PUT update user
-router.put('/:id', validateUserId, userRules, validate, handleErrors(usersController.updateUser));
+// router.put('/:id', validateUserId, userRules, validate, handleErrors(usersController.updateUser));
+router.put('/:id', validateUserId, userRules, validate, usersController.updateUser);
 
 // DELETE user
 router.delete('/:id', validateUserId, handleErrors(usersController.deleteUser));
