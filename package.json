@@ -6,8 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint . --ext .js",
     "format": "prettier --write \"src/**/*.js\"",
-    "swagger-autogen": "node swagger.js",
-    "start": "npm run swagger-autogen && node server.js"
+    "start": "node server.js",
+    "build": "npm run swagger-autogen"
   },
   "keywords": [],
   "author": "",
