@@ -15,7 +15,7 @@ const getAllUsers = async (req, res, next) => {
 const getUserById = async (req, res, next) => {
   try {
     const db = getDb();
-    const userId = req.params.id;
+    const userId = req.params.userId;
 
     const user = await db.collection('users').findOne({ _id: new ObjectId(userId) });
 
