@@ -18,10 +18,6 @@ const getPostsByUser = async (req, res, next) => {
     const db = getDb();
     const userId = req.params.userId;
 
-    // if (!ObjectId.isValid(userId)) {
-    //   return res.status(400).json({ message: 'Invalid user ID format' });
-    // }
-
     const posts = await db.collection('posts').find({ userId: new ObjectId(userId) }).toArray();
     res.status(200).json(posts);
   } catch (err) {
@@ -35,10 +31,6 @@ const getPostsAfterDate = async (req, res, next) => {
     const db = getDb();
     const date = new Date(req.params.date);
 
-    if (isNaN(date.getTime())) {
-      return res.status(400).json({ message: 'Invalid date format' });
-    }
-
     // Includes posts created on or after midnight of that date
     const posts = await db
       .collection('posts')
@@ -51,16 +43,11 @@ const getPostsAfterDate = async (req, res, next) => {
   }
 };
 
-
 // Create a post
 const createPost = async (req, res, next) => {
   try {
     const db = getDb();
     const { userId, title, content } = req.body;
-
-    if (!ObjectId.isValid(userId)) {
-      return res.status(400).json({ message: 'Invalid user ID format' });
-    }
 
     const result = await db.collection('posts').insertOne({
       userId: new ObjectId(userId),
@@ -82,18 +69,10 @@ const updatePost = async (req, res, next) => {
     const postId = req.params.id;
     const { userId, title, content } = req.body;
 
-    // if (!ObjectId.isValid(postId)) {
-    //   return res.status(400).json({ message: 'Invalid post ID format' });
-    // }
-
     const result = await db.collection('posts').updateOne(
       { _id: new ObjectId(postId) },
       { $set: { title, content } }
     );
-
-    // if (result.matchedCount === 0) {
-    //   return res.status(404).json({ message: 'Post not found' });
-    // }
 
     res.status(200).json({ message: 'Post updated successfully' });
   } catch (err) {
@@ -107,15 +86,7 @@ const deletePost = async (req, res, next) => {
     const db = getDb();
     const postId = req.params.id;
 
-    if (!ObjectId.isValid(postId)) {
-      return res.status(400).json({ message: 'Invalid post ID format' });
-    }
-
     const result = await db.collection('posts').deleteOne({ _id: new ObjectId(postId) });
-
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ message: 'Post not found' });
-    }
 
     res.status(200).json({ message: 'Post deleted successfully' });
   } catch (err) {
