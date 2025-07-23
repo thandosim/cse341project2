@@ -80,7 +80,7 @@ const updatePost = async (req, res, next) => {
   try {
     const db = getDb();
     const postId = req.params.id;
-    const { title, content } = req.body;
+    const { userId, title, content } = req.body;
 
     // if (!ObjectId.isValid(postId)) {
     //   return res.status(400).json({ message: 'Invalid post ID format' });

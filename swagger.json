@@ -257,6 +257,9 @@
             "schema": {
               "type": "object",
               "properties": {
+                "userId": {
+                  "example": "any"
+                },
                 "title": {
                   "example": "any"
                 },
