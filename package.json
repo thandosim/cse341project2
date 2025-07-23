@@ -7,8 +7,8 @@
     "lint": "eslint . --ext .js",
     "format": "prettier --write \"src/**/*.js\"",
     "swagger-autogen": "node swagger.js",
-    "build": "npm run swagger-autogen",
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "npm run swagger-autogen"
   },
   "keywords": [],
   "author": "",
