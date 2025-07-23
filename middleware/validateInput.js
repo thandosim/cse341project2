@@ -18,7 +18,7 @@ const validate = (req, res, next) => {
 };
 
 const validateUserId = async (req, res, next) => {
-  const userId = req.params.id;
+  const userId = req.params.userId;
 
   if (!ObjectId.isValid(userId)) {
     return res.status(400).json({ message: 'Invalid user ID format' });

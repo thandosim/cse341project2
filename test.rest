@@ -29,3 +29,9 @@ Content-Type: application/json
 
 ###delete user by id
 DELETE http://localhost:8080/users/687df57a5857e3652cdec45f
+
+###get all posts
+GET http://localhost:8080/posts
+
+###get post by id
+GET http://localhost:8080/posts/6878c63578dacd9de17ad5ed
