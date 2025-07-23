@@ -10,6 +10,9 @@ const app = express();
 app.use(express.json()); // Parse JSON bodies
 
 const port = process.env.PORT || 8080;
+// const baseUrl = process.env.BASE_URL || `http://localhost:${port}`
+const isProduction = process.env.NODE_ENV === 'production';
+const baseUrl = isProduction ? process.env.BASE_URL : `http://localhost:${port}`;
 
 app.use(cors());
 app.use(
@@ -35,7 +38,8 @@ mongodb.initDb((err) => {
     process.exit(1);
   } else {
     app.listen(port, () => {
-      console.log(`Connected to DB and server running on http://localhost:${port}`);
+      console.log(`Connected to DB and server running on ${baseUrl}`);
+      console.log(`Documentation available at ${baseUrl}/api-docs`);
     });
   }
 });
