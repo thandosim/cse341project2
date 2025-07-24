@@ -48,7 +48,7 @@ const createUser = async (req, res, next) => {
 const updateUser = async (req, res, next) => {
   try {
     const db = getDb();
-    const userId = req.params.id;
+    const userId = req.params.userId;
     const { firstName, lastName, type, gender, birthday, favoriteColor } = req.body;
 
     const result = await db.collection('users').updateOne(
@@ -74,7 +74,7 @@ const updateUser = async (req, res, next) => {
 const deleteUser = async (req, res, next) => {
   try {
     const db = getDb();
-    const userId = req.params.id;
+    const userId = req.params.userId;
 
     const result = await db.collection('users').deleteOne({ _id: new ObjectId(userId) });
 
