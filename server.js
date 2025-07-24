@@ -4,9 +4,10 @@ const cors = require('cors');
 const mongodb = require('./db/connect');
 const passport = require('passport');
 const session = require('express-session');
+const GitHubStrategy = require('passport-github2').Strategy;
 // const { swaggerUi, swaggerSpec } = require('./swagger');
 const swaggerUi = require('swagger-ui-express');
-const swaggerFile = require('./swagger.json'); // or your swagger config
+const swaggerFile = require('./swagger.json'); 
 
 const app = express();
 app.use(express.json()); // Parse JSON bodies
