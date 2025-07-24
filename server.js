@@ -18,6 +18,11 @@ const isProduction = process.env.NODE_ENV === 'production';
 const baseUrl = isProduction ? process.env.BASE_URL : `http://localhost:${port}`;
 
 app.use(cors());
+app.use(session({
+  secret:"secret",
+  resave: false,
+  saveUninitialized: true,
+}));
 app.use(
   (req,res,next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
