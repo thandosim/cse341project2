@@ -9,6 +9,7 @@ const {
 } = require('../middleware/validatePost');
 const {validateUserId} = require('../middleware/validateInput')
 const { handleErrors } = require('../middleware/errorHandler');
+const { isAuthenticated } = require('../middleware/authenticate');
 
 // GET all posts
 router.get('/', handleErrors(postsController.getAllPosts));
@@ -23,9 +24,9 @@ router.get('/after/:date', validateDate, handleErrors(postsController.getPostsAf
 router.post('/', postRules, validate, postsController.createPost);
 
 // PUT update a post by ID
-router.put('/:id', validatePostId, postRules, validate, postsController.updatePost);
+router.put('/:id', validatePostId, postRules, validate, isAuthenticated, postsController.updatePost);
 
 // DELETE a post by ID
-router.delete('/:id', validatePostId, handleErrors(postsController.deletePost));
+router.delete('/:id', validatePostId, isAuthenticated, handleErrors(postsController.deletePost));
 
 module.exports = router;
