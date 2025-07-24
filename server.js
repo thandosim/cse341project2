@@ -77,6 +77,7 @@ const {errorHandler} = require('./middleware/errorHandler');
 app.use(errorHandler);
 
 // Only start server after DB connection
+//trying to force an empty commit to trigger a build
 mongodb.initDb((err) => {
   if (err) {
     console.error('Failed to connect to MongoDB:', err);
