@@ -23,6 +23,8 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
 }));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(
   (req,res,next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -30,10 +32,25 @@ app.use(
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     next();
   }
-)
+);
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+}));
 app.use('/', require('./routes'));
 // app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+
+passport.use(new GitHubStrategy({
+  clientID: process.env.GITHUB_CLIENT_ID,
+  clientSecret: process.env.GITHUB_CLIENT_SECRET,
+  callbackURL: process.env.GITHUB_CALLBACK_URL
+}, 
+function(accessToken, refreshToken, profile, done) {
+  // Here you would typically save the user profile to your database
+  // For now, we just return the profile
+  return done(null, profile);
+}));
 
 // Error Handler
 const {errorHandler} = require('./middleware/errorHandler');
