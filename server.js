@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongodb = require('./db/connect');
 const passport = require('passport');
+const session = require('express-session');
 // const { swaggerUi, swaggerSpec } = require('./swagger');
 const swaggerUi = require('swagger-ui-express');
 const swaggerFile = require('./swagger.json'); // or your swagger config
