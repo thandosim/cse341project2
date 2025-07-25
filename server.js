@@ -1,54 +1,40 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const cors = require('cors');
-const mongodb = require('./db/connect');
-const passport = require('passport');
 const session = require('express-session');
+const passport = require('passport');
 const GitHubStrategy = require('passport-github2').Strategy;
-// const { swaggerUi, swaggerSpec } = require('./swagger');
+const mongodb = require('./db/connect');
 const swaggerUi = require('swagger-ui-express');
-const swaggerFile = require('./swagger.json'); 
+const swaggerFile = require('./swagger.json');
 
 const app = express();
-app.use(express.json()); // Parse JSON bodies
-
 const port = process.env.PORT || 8080;
-// const baseUrl = process.env.BASE_URL || `http://localhost:${port}`
 const isProduction = process.env.NODE_ENV === 'production';
 const baseUrl = isProduction ? process.env.BASE_URL : `http://localhost:${port}`;
 
-app.use(cors());
+// Middleware
+app.use(express.json()); // Parse JSON bodies
+app.use(cors({ origin: '*', methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'] }));
 app.use(session({
-  secret:"secret",
+  secret: 'secret',
   resave: false,
   saveUninitialized: true,
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(
-  (req,res,next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    next();
-  }
-);
-app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-}));
-app.use('/', require('./routes'));
-// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+// Swagger documentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
+// Routes
+app.use('/', require('./routes'));
+
+// GitHub OAuth Setup
 passport.use(new GitHubStrategy({
   clientID: process.env.GITHUB_CLIENT_ID,
   clientSecret: process.env.GITHUB_CLIENT_SECRET,
   callbackURL: process.env.GITHUB_CALLBACK_URL
-}, 
-function(accessToken, refreshToken, profile, done) {
-  // Here you would typically save the user profile to your database
-  // For now, we just return the profile
+}, function (accessToken, refreshToken, profile, done) {
   return done(null, profile);
 }));
 
@@ -59,25 +45,26 @@ passport.deserializeUser((user, done) => {
   done(null, user);
 });
 
-app.get('/', (req,res) => {
-  res.send(req.session.user !== undefined ? `Logged in as ${req.session.user.displayName}` : 'Logged out'
+// Auth Callback
+app.get('/auth/github/callback', passport.authenticate('github', {
+  failureRedirect: '/api-docs',
+  session: false
+}), (req, res) => {
+  req.session.user = req.user;
+  res.redirect('/');
+});
 
-  )});
+// Root endpoint
+app.get('/', (req, res) => {
+  const user = req.session.user;
+  res.send(user ? `Logged in as ${user.displayName}` : 'Logged out');
+});
 
-app.get('/auth/github/callback', passport.authenticate('github', { 
-  failureRedirect: '/api-docs',session:false }),
-  (req,res) => {
-    req.session.user = req.user;
-    res.redirect('/');
-  }
-);
-
-// Error Handler
-const {errorHandler} = require('./middleware/errorHandler');
+// Error handler
+const { errorHandler } = require('./middleware/errorHandler');
 app.use(errorHandler);
 
-// Only start server after DB connection
-//trying to force an empty commit to trigger a build again
+// Start server after DB connection
 mongodb.initDb((err) => {
   if (err) {
     console.error('Failed to connect to MongoDB:', err);
